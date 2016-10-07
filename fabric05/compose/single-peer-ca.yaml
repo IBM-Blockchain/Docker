@@ -1,0 +1,31 @@
+docker:
+  image: docker:1.11.2-dind
+  privileged: true
+membersrvc:
+  image: ibmblockchain/fabric05-ca
+  ports:
+    - "50051"
+  command: membersrvc
+vp0:
+  image: ibmblockchain/fabric05-peer
+  environment:
+    - CORE_PEER_DISCOVERY_PERIOD=300s
+    - CORE_PEER_DISCOVERY_TOUCHPERIOD=301s
+    - CORE_PEER_ADDRESSAUTODETECT=true
+    - CORE_VM_ENDPOINT=http://docker:2375
+    - CORE_LOGGING_LEVEL=DEBUG
+    - CORE_PEER_ID=vp0
+    - CORE_PEER_PKI_ECA_PADDR=membersrvc:50051
+    - CORE_PEER_PKI_TCA_PADDR=membersrvc:50051
+    - CORE_PEER_PKI_TLSCA_PADDR=membersrvc:50051
+    - CORE_SECURITY_ENABLED=true
+    - CORE_SECURITY_ENROLLID=test_vp0
+    - CORE_SECURITY_ENROLLSECRET=MwYpmSRjupbT
+  ports:
+    - "5000:5000"
+    - "30303:30303"
+    - "31315:31315"
+  links:
+    - membersrvc
+    - docker
+  command: sh -c "sleep 5; peer node start"
