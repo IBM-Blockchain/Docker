@@ -4,7 +4,7 @@ docker:
 membersrvc:
   image: ibmblockchain/fabric05-ca
   ports:
-    - "50051"
+    - "50051:50051"
   command: membersrvc
 vp0:
   image: ibmblockchain/fabric05-peer
