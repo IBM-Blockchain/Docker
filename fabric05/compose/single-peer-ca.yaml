@@ -1,6 +1,10 @@
 docker:
-  image: docker:1.11.2-dind
+  image: ibmblockchain/fabric05-docker
+  command: /start.sh
+  restart: unless-stopped
   privileged: true
+  ports:
+  - 2375:2375
 membersrvc:
   image: ibmblockchain/fabric05-ca
   ports:
